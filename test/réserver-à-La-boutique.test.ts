@@ -1,31 +1,9 @@
-class Réservation {
-    constructor(public readonly nombreDePersonne: number, public readonly date: string) {}
-}
+import { DemandeDeRéservation, MaitreD, Réservation } from '../src/maitre-d/MaitreD'
+import { Restaurant } from '../src/maitre-d/Restaurant'
 
-class DemandeDeRéservation {
-    constructor(public readonly nombreDePersonne: number, public readonly date: string) {}
-}
+describe('Besoin 1 : Réserver au restaurant La boutique', () => {
 
-
-class MaitreD {
-    constructor(public readonly nomDuRestaurant: string, public readonly capacité: number) {}
-
-    peutAccepter(demandeDeRéservation: DemandeDeRéservation, réservations: Réservation[]): boolean {
-        if (demandeDeRéservation.nombreDePersonne > this.capacité) {
-            return false
-        }
-        return réservations
-            .filter(reservation => reservation.date === demandeDeRéservation.date)
-            .reduce((total, reservation) => total + reservation.nombreDePersonne, 0) + demandeDeRéservation.nombreDePersonne
-            <= this.capacité
-    }
-}
-
-describe('Réserver au restaurant La boutique', () => {
-
-    const capacité = 12
-    const nomDuRestaurant = 'La boutique'
-    const maitreDLaBoutique = new MaitreD(nomDuRestaurant, capacité)
+    const maitreDLaBoutique = new MaitreD(new Restaurant('La boutique', 12))
 
     it('pour douze personnes', () => {
         const réservations = []
@@ -57,7 +35,7 @@ describe('Réserver au restaurant La boutique', () => {
         ).toEqual(false)
     })
 
-    it('quand la table est déjà réservé et que le service est fini', () => {
+    it('quand la table est déjà réservé un jour différent de celui de la demande', () => {
         const réservations = [new Réservation(4, '12-09-2020')]
         expect(
             maitreDLaBoutique.peutAccepter(
@@ -87,7 +65,7 @@ describe('Réserver au restaurant La boutique', () => {
         ).toEqual(false)
     })
 
-    it('pour 5 personnes quand la table est déjà réservé deux fois par de groupe de 4 personnes', () => {
+    it('pour 5 personnes quand la table est déjà réservé deux fois pour de 4 personnes respectivement', () => {
         const réservations = [
             new Réservation(4, '12-09-2020'),
             new Réservation(4, '12-09-2020')
