@@ -1,9 +1,10 @@
 import { DemandeDeRéservation, MaitreD, Réservation } from '../src/maitre-d/MaitreD'
 import { Restaurant } from '../src/maitre-d/Restaurant'
+import { Table } from './réserver-à-Haute-Cuisine.test'
 
 describe('Besoin 1 : Réserver au restaurant La boutique', () => {
 
-    const maitreDLaBoutique = new MaitreD(new Restaurant('La boutique', 12))
+    const maitreDLaBoutique = new MaitreD(new Restaurant('La boutique', [new Table(12)]))
 
     it('pour douze personnes', () => {
         const réservations = []

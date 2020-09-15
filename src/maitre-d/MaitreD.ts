@@ -21,6 +21,6 @@ export class MaitreD {
         return réservations
                 .filter(reservation => reservation.date === demandeDeRéservation.date)
                 .reduce((total, reservation) => total + reservation.nombreDePersonne, 0) + demandeDeRéservation.nombreDePersonne
-            <= this.restaurant.capacité
+            <= this.restaurant.capacitéTotal()
     }
 }
