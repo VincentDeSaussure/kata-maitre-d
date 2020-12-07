@@ -1,4 +1,7 @@
-import { MaitreD, RestaurantAjouté, RestaurantStore } from '../src/MaitreD'
+import { MaitreD, RestaurantAjouté} from '../src/MaitreD'
+import { Restaurant } from '../src/Restaurant'
+import { Table } from '../src/Table'
+import { RestaurantStore } from '../src/RestaurantStore'
 
 export class AjouteRestaurantCommand {
     constructor(public readonly tables: number[], public readonly nom: string) {}
@@ -13,5 +16,10 @@ describe('Ajouter un restaurant', () => {
         expect(
             restaurantStore.dernierÉvènement()
         ).toBeInstanceOf(RestaurantAjouté)
+        expect(
+            restaurantStore.retrieve('La boutique', 'today')
+        ).toEqual(
+            new Restaurant(4, 'La boutique')
+        )
     })
 })
