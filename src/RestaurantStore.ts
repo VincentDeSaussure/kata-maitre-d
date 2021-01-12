@@ -5,9 +5,11 @@ export class RestaurantStore {
     constructor(private readonly évènements: Évènement[]) {
     }
 
-    public par(nom: string): Évènement[] {
-        return this.évènements
-            .filter(évènement => évènement.nomDuRestaurant === nom)
+    public par(nom: string): Restaurant {
+        return Restaurant.depuis(
+            this.évènements.filter(évènement => évènement.nomDuRestaurant === nom),
+            nom
+        )
     }
 
     public enregistre(évènement: Évènement) {
@@ -22,6 +24,6 @@ export class RestaurantStore {
         const évènements = this.évènements
             .filter(évènement => évènement.nomDuRestaurant === nom)
             .filter(évènement => évènement.date === 'today' || évènement.date === date)
-        return Restaurant.depuisLesÉvènements(évènements)
+        return Restaurant.depuis(évènements, nom)
     }
 }

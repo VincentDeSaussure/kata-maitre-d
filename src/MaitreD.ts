@@ -41,19 +41,11 @@ export class MaitreD {
     }
 
     peutAccepter(demandeDeRéservation: DemandeDeRéservation) {
-        const évènements = this.restaurantStore.par(demandeDeRéservation.nomDuRestaurant)
-        const restaurant = Restaurant.depuisLesÉvènements(évènements)
+        // Choisir la taille du stream, passer la date au store + faire des events de garde.
+        const restaurant = this.restaurantStore.par(demandeDeRéservation.nomDuRestaurant)
+
         this.restaurantStore.enregistre(
-            restaurant.peutAccepter(demandeDeRéservation.nombreDePersonne) ?
-            new RéservationAcceptée(
-                demandeDeRéservation.nombreDePersonne,
-                demandeDeRéservation.date,
-                demandeDeRéservation.nomDuRestaurant) :
-            new RéservationRejetée(
-                demandeDeRéservation.nombreDePersonne,
-                demandeDeRéservation.date,
-                demandeDeRéservation.nomDuRestaurant
-            )
+            restaurant.peutAccepter(demandeDeRéservation.nombreDePersonne)
         )
     }
 
