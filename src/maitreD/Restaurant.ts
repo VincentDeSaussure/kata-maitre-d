@@ -4,7 +4,7 @@ import { RéservationAcceptée } from './évènement/RéservationAcceptée'
 import { RéservationRejetée } from './évènement/RéservationRejetée'
 
 export class Restaurant {
-    constructor(public readonly capacité: number) {
+    constructor(public readonly capacité: number, ) {
     }
 
     static depuis(évènements: Évènement[], date: string) {
@@ -25,7 +25,8 @@ export class Restaurant {
     }
 
     réserver(nombreDePersonne: number, date: string, nomDuRestaurant: string): RéservationAcceptée | RéservationRejetée {
-        return this.capacité >= nombreDePersonne ?
+        const peutAccepter = this.peutAccepter(nombreDePersonne)
+        return peutAccepter ?
             new RéservationAcceptée(
                 nombreDePersonne,
                 date,
@@ -36,5 +37,10 @@ export class Restaurant {
                 date,
                 nomDuRestaurant
             )
+    }
+
+    private peutAccepter(nombreDePersonne: number) {
+        const peutAccepter = this.capacité >= nombreDePersonne
+        return peutAccepter
     }
 }
