@@ -8,25 +8,23 @@ export class DemandeDeRéservation implements Evènement {
     constructor(public readonly pour: number) {}
 }
 
-const labelEvènements = {
-    SiègesRéservés : 'sièges-réservés',
-    DemandeDeRéservationReçu : 'demande-de-réservation-reçu'
-}
+export const SIEGES_RESERVES = 'sièges-réservés'
+export const DEMANDE_DE_RESERVATION_RECU = 'demande-de-réservation-reçu'
 
 class Restaurant extends EventEmitter {
     public capacité: number = 4
     réponse: boolean = false
     constructor() {
         super()
-        this.on(labelEvènements.SiègesRéservés, this.reduitLaCapacité)
-            .on(labelEvènements.DemandeDeRéservationReçu, this.réponds)
+        this.on(SIEGES_RESERVES, this.réduitLaCapacité)
+            .on(DEMANDE_DE_RESERVATION_RECU, this.réponds)
     }
 
     réponds(demandeDeRéservation: DemandeDeRéservation) {
         this.réponse = demandeDeRéservation.pour <= this.capacité
     }
 
-    private reduitLaCapacité(siègesRéservés: SiègesRéservés) {
+    private réduitLaCapacité(siègesRéservés: SiègesRéservés) {
         this.capacité -= siègesRéservés.nombre
     }
 }
@@ -36,23 +34,20 @@ interface Evènement {
 }
 
 class SiègesRéservés implements Evènement {
-    public name: string = labelEvènements.SiègesRéservés
+    public name: string = SIEGES_RESERVES
     constructor(readonly nombre: number) {}
 }
 
-class MaitreD extends EventEmitter {
+class MaitreD {
     private readonly restaurant: Restaurant = new Restaurant()
 
-    constructor(private readonly évènements: Evènement[]) {
-        super()
-        this.on('demande-traité', () => true)
-    }
+    constructor(private readonly évènements: Evènement[]) {}
 
     reçoit(demandeDeRéservation: DemandeDeRéservation): MaitreD {
         this.évènements.forEach((évènement: Evènement) => {
             this.restaurant.emit(évènement.name, évènement)
         })
-        this.restaurant.emit(labelEvènements.DemandeDeRéservationReçu, demandeDeRéservation)
+        this.restaurant.emit(DEMANDE_DE_RESERVATION_RECU, demandeDeRéservation)
         return this
     }
 
